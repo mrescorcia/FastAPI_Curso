@@ -4,8 +4,12 @@ from importlib.resources import path
 from operator import gt
 from typing import Optional
 
+#Clase para crear enumeraciones de String
+from enum import Enum
+
 #libreria Pydantic, clase BaseModel
 from pydantic import BaseModel
+from pydantic import Field
 
 #                                           FastAPI
 from fastapi import FastAPI
@@ -13,17 +17,36 @@ from fastapi import Body, Query, Path
 app = FastAPI()
 
 #                                           Models
+class HairColor(Enum):
+    white = "white"
+    brown = "brown"
+    black = "black"
+    blonde = "blonde"
+    red = "red"
+
 class Location(BaseModel):
     city: str
     state: str
     country: str
 
 class Person(BaseModel):
-    firstName: str
-    lastName: str
-    age: int
-    hairColor: Optional[str] = None
-    isMarried: Optional[bool] = None
+    firstName: str = Field(
+        ...,
+        min_length=0,
+        max_length=50
+    )
+    lastName: str = Field(
+        ...,
+        min_length=0,
+        max_length=50
+    )
+    age: int = Field(
+        ...,
+        gt=0,
+        le=115
+    )
+    hairColor: Optional[HairColor] = Field(default=None)
+    isMarried: Optional[bool] = Field(default=None)
 
 
 #-- La siguiente es una path operation
