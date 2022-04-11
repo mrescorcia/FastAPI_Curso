@@ -1,14 +1,16 @@
 #                                           Python
 #realizaremos tipado estatico con typing
+import email
 from importlib.resources import path
 from operator import gt
 from typing import Optional
 
 #Clase para crear enumeraciones de String
 from enum import Enum
+from email_validator import validate_email
 
 #libreria Pydantic, clase BaseModel
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr, HttpUrl
 from pydantic import Field
 
 #                                           FastAPI
@@ -17,6 +19,8 @@ from fastapi import Body, Query, Path
 app = FastAPI()
 
 #                                           Models
+    
+
 class HairColor(Enum):
     white = "white"
     brown = "brown"
@@ -24,10 +28,20 @@ class HairColor(Enum):
     blonde = "blonde"
     red = "red"
 
+
 class Location(BaseModel):
-    city: str
-    state: str
-    country: str
+    city: str = Field(
+        min_length=3,
+        max_length=50
+    )
+    state: str = Field(
+        min_length=3,
+        max_length=50
+    )
+    country: str = Field(
+        min_length=3,
+        max_length=50
+    )
 
 class Person(BaseModel):
     firstName: str = Field(
@@ -47,6 +61,12 @@ class Person(BaseModel):
     )
     hairColor: Optional[HairColor] = Field(default=None)
     isMarried: Optional[bool] = Field(default=None)
+    email: EmailStr = Field(
+        ...
+    )
+    blogUrl: HttpUrl = Field(
+        ...
+    )
 
 
 #-- La siguiente es una path operation
