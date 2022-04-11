@@ -1,5 +1,7 @@
 #                                           Python
 #realizaremos tipado estatico con typing
+from importlib.resources import path
+from operator import gt
 from typing import Optional
 
 #libreria Pydantic, clase BaseModel
@@ -11,6 +13,11 @@ from fastapi import Body, Query, Path
 app = FastAPI()
 
 #                                           Models
+class Location(BaseModel):
+    city: str
+    state: str
+    country: str
+
 class Person(BaseModel):
     firstName: str
     lastName: str
@@ -60,3 +67,20 @@ def show_person(
         )
 ):
     return {person_id: "It exist!"}
+
+#-- Validaciones: Request Body
+@app.put("/person/detail/{person_id}")
+def updatePerson(
+    person_id: int = Path(
+        ...,
+        title="Person ID",
+        description="This is the person ID",
+        gt=0
+    ),
+    person: Person = Body(...),
+    location: Location = Body(...)
+):
+    #--combinamos los dos diccionarios para tener uno solo
+    results = person.dict()
+    results.update(location.dict())
+    return results
