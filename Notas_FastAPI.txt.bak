@@ -1,0 +1,11 @@
+Instalacion de FastAPI + Servidor:
+>pip install fastapi uvicorn
+
+Crear alias en cmder:
+>alias nombre_alias .\venv\Scripts\activate
+
+Ejecutar servidor en terminar:
+>uvicorn main:app --reload
+	Notas: 'main' es el nombre de nuestro archivo.py
+		   'app' es el objeto que contiene nuestra aplicacion
+		   '--reload' es el modificador para hacer hot reloading

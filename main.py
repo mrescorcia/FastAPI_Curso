@@ -43,6 +43,18 @@ class Location(BaseModel):
         max_length=50
     )
 
+    #---                automatic_body_examples
+    class Config:
+        schema_extra = {
+            "example":{
+                "city": "Malambo",
+                "state": "Atlántico",
+                "country": "Colombia"
+            }
+        }
+
+
+
 class Person(BaseModel):
     firstName: str = Field(
         ...,
@@ -67,6 +79,20 @@ class Person(BaseModel):
     blogUrl: HttpUrl = Field(
         ...
     )
+
+    #---                    automatic_body_examples
+    class Config:
+        schema_extra = {
+            "example": {
+                "first_name": "David",
+                "last_name": "Escorcia Gomez",
+                "age": 24,
+                "hairColor": "white",
+                "isMarried": False,
+                "email": "escorciagomezdavid@gmail.com",
+                "blogUrl": "http://www.google.com"
+            }
+        }
 
 
 #-- La siguiente es una path operation
@@ -127,3 +153,4 @@ def updatePerson(
     results = person.dict()
     results.update(location.dict())
     return results
+    #return person
