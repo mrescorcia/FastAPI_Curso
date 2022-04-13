@@ -59,10 +59,7 @@ class Location(BaseModel):
         }
     '''
     
-
-
-
-class Person(BaseModel):
+class PersonBase(BaseModel):
     firstName: str = Field(
         ...,
         min_length=0,
@@ -91,6 +88,8 @@ class Person(BaseModel):
         ...,
         example="http://www.shelseatop.com"
     )
+
+class Person(PersonBase):
     password : str = Field(
         ...,
         min_length=8,
@@ -113,35 +112,8 @@ class Person(BaseModel):
         }
     '''
 
-class PersonOut(BaseModel):
-    firstName: str = Field(
-        ...,
-        min_length=0,
-        max_length=50,
-        example="Chelsy"
-    )
-    lastName: str = Field(
-        ...,
-        min_length=0,
-        max_length=50,
-        example="Bonguechea"
-    )
-    age: int = Field(
-        ...,
-        gt=0,
-        le=115,
-        example=21
-    )
-    hairColor: Optional[HairColor] = Field(default=None)
-    isMarried: Optional[bool] = Field(default=None)
-    email: EmailStr = Field(
-        ...,
-        example="chelsy.bonq@gmail.com"
-    )
-    blogUrl: HttpUrl = Field(
-        ...,
-        example="http://www.moda.com"
-    )
+class PersonOut(PersonBase):
+    pass
 
 
 #-- La siguiente es una path operation
