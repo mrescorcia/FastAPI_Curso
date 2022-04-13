@@ -67,6 +67,57 @@ class Person(BaseModel):
         ...,
         min_length=0,
         max_length=50,
+        example="Chelsea"
+    )
+    lastName: str = Field(
+        ...,
+        min_length=0,
+        max_length=50,
+        example="Bonguechea"
+    )
+    age: int = Field(
+        ...,
+        gt=0,
+        le=115,
+        example=21
+    )
+    hairColor: Optional[HairColor] = Field(default=None)
+    isMarried: Optional[bool] = Field(default=None)
+    email: EmailStr = Field(
+        ...,
+        example="chelsea.bonq@gmail.com"
+    )
+    blogUrl: HttpUrl = Field(
+        ...,
+        example="http://www.shelseatop.com"
+    )
+    password : str = Field(
+        ...,
+        min_length=8,
+        example="HolaSoyChelsea"
+    )
+
+    #---                    automatic_body_examples
+    '''
+    class Config:
+        schema_extra = {
+            "example": {
+                "first_name": "David",
+                "last_name": "Escorcia Gomez",
+                "age": 24,
+                "hairColor": "white",
+                "isMarried": False,
+                "email": "escorciagomezdavid@gmail.com",
+                "blogUrl": "http://www.google.com"
+            }
+        }
+    '''
+
+class PersonOut(BaseModel):
+    firstName: str = Field(
+        ...,
+        min_length=0,
+        max_length=50,
         example="Chelsy"
     )
     lastName: str = Field(
@@ -92,23 +143,6 @@ class Person(BaseModel):
         example="http://www.moda.com"
     )
 
-    #---                    automatic_body_examples
-    '''
-    class Config:
-        schema_extra = {
-            "example": {
-                "first_name": "David",
-                "last_name": "Escorcia Gomez",
-                "age": 24,
-                "hairColor": "white",
-                "isMarried": False,
-                "email": "escorciagomezdavid@gmail.com",
-                "blogUrl": "http://www.google.com"
-            }
-        }
-    '''
-    
-
 
 #-- La siguiente es una path operation
 @app.get("/")
@@ -118,7 +152,7 @@ def home():
 # -- uvicorn main:app --reload (para correr en terminal)
 
 # request and response
-@app.post("/person/new")
+@app.post("/person/new", response_model=PersonOut)
 def create_person(person: Person = Body(...)):
     return person
 
