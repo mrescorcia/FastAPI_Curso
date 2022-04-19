@@ -18,18 +18,17 @@ from pydantic import Field
 from fastapi import FastAPI
 from fastapi import status
 from fastapi import Body, Query, Path
+
 app = FastAPI()
 
 #                                           Models
     
-
 class HairColor(Enum):
     white = "white"
     brown = "brown"
     black = "black"
     blonde = "blonde"
     red = "red"
-
 
 class Location(BaseModel):
     city: str = Field(
@@ -116,18 +115,15 @@ class Person(PersonBase):
 class PersonOut(PersonBase):
     pass
 
-
-#-- La siguiente es una path operation
+# --                                La siguiente es una path operation
 @app.get(
     path="/",
     status_code=status.HTTP_200_OK
- )
+    )
 def home():
     return {"Hello": "World"}
 
-# -- uvicorn main:app --reload (para correr en terminal)
-
-# request and response
+# --                                request and response
 @app.post(
     path="/person/new",
     response_model=PersonOut,
@@ -139,7 +135,8 @@ def create_person(person: Person = Body(...)):
 #---                                Validaciones: Query Parameters
 @app.get(
     path="/person/detail",
-    status_code=status.HTTP_200_OK)
+    status_code=status.HTTP_200_OK
+    )
 def showPerson(
     name: Optional[str] = Query(
         None,
@@ -158,8 +155,11 @@ def showPerson(
 ):
     return {name: age}
 
-#---                                        validaciones: Path Parameters
-@app.get("/person/detail/{person_id}")
+#---                                validaciones: Path Parameters
+@app.get(
+    path="/person/detail/{person_id}",
+    status_code=status.HTTP_200_OK
+    )
 def show_person(
     person_id: int = Path(
         ..., 
@@ -171,8 +171,11 @@ def show_person(
 ):
     return {person_id: "It exist!"}
 
-#-- Validaciones: Request Body
-@app.put("/person/detail/{person_id}")
+#--                                 Validaciones: Request Body
+@app.put(
+    path="/person/detail/{person_id}",
+    status_code=status.HTTP_200_OK
+    )
 def updatePerson(
     person_id: int = Path(
         ...,
