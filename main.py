@@ -61,7 +61,6 @@ class Location(BaseModel):
     
 
 
-
 class Person(BaseModel):
     firstName: str = Field(
         ...,
