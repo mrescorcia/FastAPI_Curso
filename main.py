@@ -16,6 +16,7 @@ from pydantic import Field
 
 #                                           FastAPI
 from fastapi import FastAPI
+from fastapi import status
 from fastapi import Body, Query, Path
 app = FastAPI()
 
@@ -117,19 +118,28 @@ class PersonOut(PersonBase):
 
 
 #-- La siguiente es una path operation
-@app.get("/")
+@app.get(
+    path="/",
+    status_code=status.HTTP_200_OK
+ )
 def home():
     return {"Hello": "World"}
 
 # -- uvicorn main:app --reload (para correr en terminal)
 
 # request and response
-@app.post("/person/new", response_model=PersonOut)
+@app.post(
+    path="/person/new",
+    response_model=PersonOut,
+    status_code=status.HTTP_201_CREATED
+    )
 def create_person(person: Person = Body(...)):
     return person
 
 #---                                Validaciones: Query Parameters
-@app.get("/person/detail")
+@app.get(
+    path="/person/detail",
+    status_code=status.HTTP_200_OK)
 def showPerson(
     name: Optional[str] = Query(
         None,
