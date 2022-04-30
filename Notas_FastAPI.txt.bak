@@ -1,0 +1,34 @@
+Crear un entorno virtual con venv
+>virtualenv venv
+
+OPCIONAL:
+Escoger version de Pyhton
+	1. Ver la ruta donde esta instalada la version del servidor:
+	>which python3
+	/c/Users/mrescorcia/AppData/Local/Microsoft/WindowsApps/python3
+	
+	2. Instalar en el host la version que deseas usar para crear el entorno virtual
+	
+	2. Listar las versiones instalas de Python en el equipo
+	> ls ~/AppData/Local/Programs/Python
+	
+	3. Creamos el entorno virtual con la version deseada
+	>virtualenv -p C:\Users\mrescorcia\AppData\Local\Programs\Python\Python38\python.exe venv
+
+Crear alias en cmder:
+>alias avenv=.\venv\Scripts\activate
+
+Activar entorno virtual con alias
+>avenv
+
+Instalacion de FastAPI + Servidor:
+>pip install fastapi uvicorn
+
+
+
+Ejecutar servidor en terminar:
+>uvicorn main:app --reload
+	Notas: 'main' es el nombre de nuestro archivo.py
+		   'app' es el objeto que contiene nuestra aplicacion
+		   '--reload' es el modificador para hacer hot reloading
+
