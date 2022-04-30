@@ -2,6 +2,7 @@
 #realizaremos tipado estatico con typing
 from doctest import Example
 import email
+from email import message
 from importlib.resources import path
 from operator import gt
 from typing import Optional
@@ -17,7 +18,7 @@ from pydantic import Field
 #                                           FastAPI
 from fastapi import FastAPI
 from fastapi import status
-from fastapi import Body, Query, Path
+from fastapi import Body, Query, Path, Form
 
 app = FastAPI()
 
@@ -115,6 +116,10 @@ class Person(PersonBase):
 class PersonOut(PersonBase):
     pass
 
+class LoginOut(BaseModel):
+    username: str = Field(..., max_length=20, example="mrescorcia") # --- No devolvemos password por cuestiones de seguridad.
+    message: str = Field(default="Login Successfully")
+
 # --                                La siguiente es una path operation
 @app.get(
     path="/",
@@ -191,4 +196,10 @@ def updatePerson(
     results = person.dict()
     results.update(location.dict())
     return results
-    #return person
+
+@app.post(path="/login",
+          response_model=LoginOut,
+          status_code=status.HTTP_200_OK
+          )
+def login(username: str = Form(...), password:str = Form(...)):
+    return LoginOut(username=username)
