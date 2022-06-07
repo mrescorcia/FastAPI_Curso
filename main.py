@@ -117,7 +117,8 @@ class LoginOut(BaseModel):
 # --                                La siguiente es una path operation
 @app.get(
     path="/",
-    status_code=status.HTTP_200_OK
+    status_code=status.HTTP_200_OK,
+    tags=["Home"]
     )
 def home():
     return {"Hello": "World"}
@@ -126,7 +127,8 @@ def home():
 @app.post(
     path="/person/new",
     response_model=PersonOut,
-    status_code=status.HTTP_201_CREATED
+    status_code=status.HTTP_201_CREATED,
+    tags=["Persons"]
     )
 def create_person(person: Person = Body(...)):
     return person
@@ -134,7 +136,8 @@ def create_person(person: Person = Body(...)):
 #---                                Validaciones: Query Parameters
 @app.get(
     path="/person/detail",
-    status_code=status.HTTP_200_OK
+    status_code=status.HTTP_200_OK,
+    tags=["Persons"]
     )
 def showPerson(
     name: Optional[str] = Query(
@@ -158,7 +161,8 @@ persons = [1, 2, 3, 4, 5]
 #---                                validaciones: Path Parameters
 @app.get(
     path="/person/detail/{person_id}",
-    status_code=status.HTTP_200_OK
+    status_code=status.HTTP_200_OK,
+    tags=["Persons"]
     )
 def show_person(
     person_id: int = Path(
@@ -179,7 +183,8 @@ def show_person(
 #--                                 Validaciones: Request Body
 @app.put(
     path="/person/detail/{person_id}",
-    status_code=status.HTTP_200_OK
+    status_code=status.HTTP_200_OK,
+    tags=["Persons"]
     )
 def updatePerson(
     person_id: int = Path(
@@ -198,17 +203,20 @@ def updatePerson(
     return results
 
 # --- Forms
-@app.post(path="/login",
-          response_model=LoginOut,
-          status_code=status.HTTP_200_OK
-          )
+@app.post(
+    path="/login",
+    response_model=LoginOut,
+    status_code=status.HTTP_200_OK,
+    tags=["Persons"]
+    )
 def login(username: str = Form(...), password:str = Form(...)):
     return LoginOut(username=username)
 
 # --- cookies and Headerds parameters
 @app.post(
     path="/contact",
-    status_code=status.HTTP_200_OK
+    status_code=status.HTTP_200_OK,
+    tags=["Contact"]
 )
 def contact(
     firts_name: str = Form(
@@ -233,7 +241,8 @@ def contact(
 
 # ---                               Files
 @app.post(
-    path="/post_image"
+    path="/post_image",
+    tags=["Sources"]
 )
 def post_image(
     image: UploadFile = File(...)
