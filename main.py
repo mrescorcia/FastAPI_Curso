@@ -1,24 +1,24 @@
 #                                           Python
 #realizaremos tipado estatico con typing
-from doctest import Example
-import email
-from email import message
-from importlib.resources import path
-from operator import gt
+# from doctest import Example
+# import email
+# from email import message
+# from importlib.resources import path
+# from operator import gt
 from typing import Optional
 
 #Clase para crear enumeraciones de String
 from enum import Enum
-from email_validator import validate_email
+# from email_validator import validate_email
 
 #libreria Pydantic, clase BaseModel
 from pydantic import BaseModel, EmailStr, HttpUrl
 from pydantic import Field
 
 #                                           FastAPI
-from fastapi import FastAPI
+from fastapi import FastAPI 
 from fastapi import status
-from fastapi import Body, Query, Path, Form, Header, Cookie
+from fastapi import Body, Query, Path, Form, Header, Cookie, UploadFile, File
 
 app = FastAPI()
 
@@ -230,3 +230,16 @@ def contact(
     ads: Optional[str] = Cookie(default=None)
 ):
     return user_agent
+
+# ---                               Files
+@app.post(
+    path="/post_image"
+)
+def post_image(
+    image: UploadFile = File(...)
+):
+    return {
+        "Filename": image.filename,
+        "Format": image.content_type,
+        "Size(kb)": f"{round(len(image.file.read())/1024, ndigits=2)} KB"
+    }
