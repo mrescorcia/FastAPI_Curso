@@ -128,16 +128,29 @@ def home():
     path="/person/new",
     response_model=PersonOut,
     status_code=status.HTTP_201_CREATED,
-    tags=["Persons"]
+    tags=["Persons"],
+    summary="Create Person in the App"
     )
 def create_person(person: Person = Body(...)):
+    """
+    Create Person
+    
+    This path operation creates a person in the app and save the information in the database
+    
+    Parameters: 
+    - Request body parameter:
+        - **person: Person** -> A person model with fist name, last name, age, hair color and marital status
+        
+    Returns a person model with first name, last name, age, hair color and marital status
+    """
     return person
 
 #---                                Validaciones: Query Parameters
 @app.get(
     path="/person/detail",
     status_code=status.HTTP_200_OK,
-    tags=["Persons"]
+    tags=["Persons"],
+    summary="Show Person"
     )
 def showPerson(
     name: Optional[str] = Query(
@@ -155,6 +168,18 @@ def showPerson(
         example=23
         )
 ):
+    """
+    Show Person
+    
+    This path operation shows a person in the app 
+    
+    Parameters: 
+    - Request quey parameter:
+        - **name: Optional[str]** -> the person name
+        - **age: str** -> the person age
+        
+    Returns a json with person name and person age
+    """
     return {name: age}
 
 persons = [1, 2, 3, 4, 5]
