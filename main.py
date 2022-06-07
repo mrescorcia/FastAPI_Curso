@@ -1,15 +1,8 @@
 #                                           Python
-#realizaremos tipado estatico con typing
-# from doctest import Example
-# import email
-# from email import message
-# from importlib.resources import path
-# from operator import gt
 from typing import Optional
 
 #Clase para crear enumeraciones de String
 from enum import Enum
-# from email_validator import validate_email
 
 #libreria Pydantic, clase BaseModel
 from pydantic import BaseModel, EmailStr, HttpUrl
@@ -18,6 +11,7 @@ from pydantic import Field
 #                                           FastAPI
 from fastapi import FastAPI 
 from fastapi import status
+from fastapi import HTTPException
 from fastapi import Body, Query, Path, Form, Header, Cookie, UploadFile, File
 
 app = FastAPI()
@@ -160,6 +154,7 @@ def showPerson(
 ):
     return {name: age}
 
+persons = [1, 2, 3, 4, 5]
 #---                                validaciones: Path Parameters
 @app.get(
     path="/person/detail/{person_id}",
@@ -174,6 +169,11 @@ def show_person(
         example=123
         )
 ):
+    if person_id not in persons:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="¡This person doesn't Exist!"
+        )
     return {person_id: "It exist!"}
 
 #--                                 Validaciones: Request Body
